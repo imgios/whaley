@@ -20,6 +20,14 @@ MASTER_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAdd
 sed -i "s/^    server:.*/    server: https:\/\/$MASTER_IP:6443/" $HOME/.kube/config
 cd
 
+# Issue: worker nodes are marked with role: none
+# Not sure if the issue is related to this version or something wrong by me :)
+# In case, they can be fixed on the fly adding a label
+WORKER_NODES=$(kubectl get nodes --no-headers | grep -v control-plane | awk '{print $1}')
+for worker in ${WORKER_NODES}; do
+    kubectl label node ${worker} node-role.kubernetes.io/worker=worker
+done
+
 echo -e ${GREEN}
 echo "> Deploying the Kubernetes Dashboard"
 echo -e ${NOCOLOR}
