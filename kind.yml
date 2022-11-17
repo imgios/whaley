@@ -1,0 +1,12 @@
+# One control plane node and two "workers".
+#
+# While these will not add more real compute capacity and
+# have limited isolation, this can be useful for testing
+# kubernetes and its features like rolling updates etc.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: local-kind
+nodes:
+- role: control-plane
+- role: worker
+- role: worker
