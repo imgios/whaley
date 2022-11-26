@@ -16,6 +16,7 @@ docker network connect kind local-kind
 
 echo -e ${GREEN}
 echo "> Modifying Kubernetes config to point to the master node"
+echo -e ${NOCOLOR}
 MASTER_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' local-kind-control-plane)
 sed -i "s/^    server:.*/    server: https:\/\/$MASTER_IP:6443/" $HOME/.kube/config
 cd
