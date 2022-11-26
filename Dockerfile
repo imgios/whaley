@@ -1,4 +1,4 @@
-FROM alpine:3.17 as local-kind
+FROM alpine:3.17 as whaley
 
 RUN apk add --no-cache \
     bash \
