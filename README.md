@@ -1,4 +1,4 @@
-# 🐋 local-kind
+# 🐋 whaley
 
 Kubernetes-in-Docker ([`kind`](https://kind.sigs.k8s.io/)) project to run a small local Kubernetes cluster using Docker container nodes for several purposes:
 
@@ -22,4 +22,4 @@ Please read [CONTRIBUTING.md](#) for details on our code of conduct, and the pro
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/imgios/local-kind/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/imgios/whaley/tags).

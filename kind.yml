@@ -5,7 +5,7 @@
 # kubernetes and its features like rolling updates etc.
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
-name: local-kind
+name: whaley
 nodes:
 - role: control-plane
 - role: worker

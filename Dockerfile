@@ -1,4 +1,4 @@
-FROM alpine:3.17 as local-kind
+FROM alpine:3.17 as whaley
 
 RUN apk add --no-cache \
     bash \
@@ -12,15 +12,15 @@ RUN apk add --no-cache \
     wget
 
 # Add Limited user
-RUN groupadd -r localkind \
+RUN groupadd -r whaley \
              -g 777 && \
-    useradd -c "localkind init-script account" \
-            -g localkind \
+    useradd -c "whaley init-script account" \
+            -g whaley \
             -u 777 \
             -m \
             -r \
-            localkind && \
-    usermod -aG docker localkind
+            whaley && \
+    usermod -aG docker whaley
 
 # Install kubectl
 RUN curl -LO https://dl.k8s.io/release/v1.25.2/bin/linux/amd64/kubectl && \
