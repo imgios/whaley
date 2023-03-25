@@ -10,6 +10,12 @@ echo "> Building the cluster"
 echo -e ${NOCOLOR}
 bash -c '/usr/local/bin/kind create cluster --image kindest/node:v1.25.2 --config /root/kind.yml'
 
+# Retrieve docker container id
+# Docker >= 1.12 - $HOSTNAME seems to be the short container id
+if ! docker ps | grep -q $HOSTNAME; then
+    echo "[ERROR] - Unable to retrieve the container id."
+    exit 1
+fi
 # Connect the director node on the same net
 # TO-DO: Change whaley with the container name
 docker network connect kind whaley
