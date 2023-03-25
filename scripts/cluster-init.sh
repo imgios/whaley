@@ -10,9 +10,15 @@ echo "> Building the cluster"
 echo -e ${NOCOLOR}
 bash -c '/usr/local/bin/kind create cluster --image kindest/node:v1.25.2 --config /root/kind.yml'
 
-# Connect the director node on the same net
-# TO-DO: Change whaley with the container name
-docker network connect kind whaley
+# Retrieve docker container id
+# Docker >= 1.12 - $HOSTNAME seems to be the short container id
+if ! docker ps | grep -q $HOSTNAME; then
+    echo "[ERROR] - Unable to retrieve the container id."
+    exit 1
+fi
+
+# Connect the  jump host node on the same net
+docker network connect kind $HOSTNAME
 
 echo -e ${GREEN}
 echo "> Modifying Kubernetes config to point to the master node"
@@ -45,7 +51,7 @@ echo "> Setting up the dashboard proxy"
 echo -e ${NOCOLOR}
 # 'whaley' in the next line is the main container name
 # TO-DO: Change whaley with the container name
-CLIENT_IP=$(docker inspect --format='{{.NetworkSettings.Networks.kind.IPAddress}}' whaley)
+CLIENT_IP=$(docker inspect --format='{{.NetworkSettings.Networks.kind.IPAddress}}' $HOSTNAME)
 kubectl proxy --address=$CLIENT_IP --accept-hosts=^localhost$,^127\.0\.0\.1$,^\[::1\]$ &
 echo "You can access the dashboard from there: http://127.0.0.1:30303/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/"
 
