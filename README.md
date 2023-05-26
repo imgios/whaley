@@ -10,6 +10,28 @@ Kubernetes-in-Docker ([`kind`](https://kind.sigs.k8s.io/)) project to run a smal
 
 Just [`🐳 docker`](https://www.docker.com/)
 
+(Optional) If you want to make some changes and/or build it manually:
+```shell
+docker build . -t <image-tag>
+```
+
+Run a docker container (replace the docker image name if you built it manually):
+```shell
+docker run --rm -p 30303:8001 -v /var/run/docker.sock:/var/run/docker.sock -it imgios/whaley:latest
+```
+
+This will boot up a Kubernetes cluster with a control-plane and two workers, and will also create to a jump-host server. If you want to update the node count, update [kind.yml](kind.yml):
+
+```yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: whaley
+nodes:
+- role: control-plane
+- role: worker
+- role: worker
+```
+
 ## Built With
 
 * [Docker](https://docs.docker.com/) - Platform as a Service (PaaS)
