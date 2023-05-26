@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 GREEN='\033[0;32m'
+CYAN='\033[0;36m'
 NOCOLOR='\033[0m'
 # TO-DO: Should I replace whaley with the container name?
 export PS1="\[\e]0;\u@whaley: \w\a\]${debian_chroot:+($debian_chroot)}\u@whaley:\w\$ "
@@ -60,7 +61,6 @@ cd
 /bin/bash
 
 # Delete the cluster at the end
-echo -e ${GREEN}
-echo "> Destroying the cluster"
+echo -e ${CYAN}
+echo "> Use kind delete cluster --name whaley to delete the cluster"
 echo -e ${NOCOLOR}
-kind delete cluster --name whaley
