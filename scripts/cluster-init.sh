@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+WORKERS=2
+
+# Parse options from the CLI
+while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
+    -w | --workers )
+        shift; [[ "$1" =~ ^[0-9]$ ]] && WORKERS=$1 || WORKERS=2
+        ;;
+esac; shift; done
+if [[ "$1" == '--' ]]; then shift; fi
+
+for (( i = 0 ; i < $WORKERS; i++)); do
+    echo "- role: worker" >> /root/kind.yml
+done
+
 GREEN='\033[0;32m'
 NOCOLOR='\033[0m'
 # TO-DO: Should I replace whaley with the container name?
