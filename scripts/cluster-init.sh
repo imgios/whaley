@@ -10,8 +10,6 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
 esac; shift; done
 if [[ "$1" == '--' ]]; then shift; fi
 
-echo "> Workers count is: $WORKERS"
-
 GREEN='\033[0;32m'
 NOCOLOR='\033[0m'
 # TO-DO: Should I replace whaley with the container name?
