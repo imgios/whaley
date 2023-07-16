@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-WORKERS=3
+WORKERS=2
 
 # Parse options from the CLI
 while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
     -w | --workers )
-        shift; [[ "$1" =~ ^[0-9]$ ]] && WORKERS=$1 || WORKERS=3
+        shift; [[ "$1" =~ ^[0-9]$ ]] && WORKERS=$1 || WORKERS=2
         ;;
 esac; shift; done
 if [[ "$1" == '--' ]]; then shift; fi
