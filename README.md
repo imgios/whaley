@@ -44,4 +44,4 @@ Please read [CONTRIBUTING.md](#) for details on our code of conduct, and the pro
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/imgios/whaley/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [docker image tags](https://github.com/imgios/whaley/pkgs/container/whaley).
