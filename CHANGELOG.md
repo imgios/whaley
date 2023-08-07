@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2023/08/07
+
 ### Added
 
 - Let the user define control-plane nodes using `--masters` option. By default, one control-plane will be created.
@@ -26,3 +28,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 I'm sorry, I wasn't planning any release for the project, that's why I started writing down the following file only after those versions were created 😞.
 
 [unreleased]: https://github.com/imgios/whaley/compare/main...dev
+[1.2.1]: https://github.com/imgios/whaley/releases/tag/1.2.1
