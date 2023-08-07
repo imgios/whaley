@@ -84,10 +84,7 @@ echo "You can access the dashboard from there: http://127.0.0.1:30303/api/v1/nam
 
 # Start up a bash shell to try out Kubernetes
 cd
+echo
+echo -e "\U2139 Execute the following command if you want to destroy the cluster:"
+echo "      kind delete cluster --name ${NAME}"
 /bin/bash
-
-# Delete the cluster at the end
-echo -e ${GREEN}
-echo "> Deleting the cluster"
-echo -e ${NOCOLOR}
-kind delete cluster --name ${NAME}
