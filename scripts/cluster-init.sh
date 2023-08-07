@@ -2,7 +2,7 @@
 
 MASTERS=1
 WORKERS=2
-
+NAME=whaley
 # Parse options from the CLI
 while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
     -w | --workers )
@@ -11,6 +11,11 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
     -m | --masters)
         shift; [[ "$1" =~ ^[0-9]$ ]] && MASTERS=$1 || MASTERS=1
         ;;
+    --name)
+        if [[ -n "$2" && ! "$2" =~ ^- && ! "$1" == "--" ]]; then
+            shift; NAME=$1
+            sed -i "s/whaley/$NAME/g" /root/kind.yml
+        fi
 esac; shift; done
 if [[ "$1" == '--' ]]; then shift; fi
 
@@ -25,7 +30,7 @@ done
 GREEN='\033[0;32m'
 NOCOLOR='\033[0m'
 # TO-DO: Should I replace whaley with the container name?
-export PS1="\[\e]0;\u@whaley: \w\a\]${debian_chroot:+($debian_chroot)}\u@whaley:\w\$ "
+export PS1="\[\e]0;\u@${NAME}: \w\a\]${debian_chroot:+($debian_chroot)}\u@${NAME}:\w\$ "
 
 echo -e ${GREEN}
 echo "> Building the cluster"
@@ -45,7 +50,7 @@ docker network connect kind $HOSTNAME
 echo -e ${GREEN}
 echo "> Modifying Kubernetes config to point to the master node"
 echo -e ${NOCOLOR}
-MASTER_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' whaley-control-plane)
+MASTER_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${NAME}-control-plane)
 sed -i "s/^    server:.*/    server: https:\/\/$MASTER_IP:6443/" $HOME/.kube/config
 cd
 
@@ -85,4 +90,4 @@ cd
 echo -e ${GREEN}
 echo "> Deleting the cluster"
 echo -e ${NOCOLOR}
-kind delete cluster --name whaley
+kind delete cluster --name ${NAME}
