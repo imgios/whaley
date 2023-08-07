@@ -11,6 +11,11 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
     -m | --masters)
         shift; [[ "$1" =~ ^[0-9]$ ]] && MASTERS=$1 || MASTERS=1
         ;;
+    --name)
+        if [[ -n "$2" && ! "$2" =~ ^- && ! "$1" == "--" ]]; then
+            shift
+            sed -i "s/whaley/$1/g" /root/kind.yml
+        fi
 esac; shift; done
 if [[ "$1" == '--' ]]; then shift; fi
 
