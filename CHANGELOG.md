@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Let the user define control-plane nodes using `--masters` options. By default, one control-plane will be created.
+- Let the user define control-plane nodes using `--masters` option. By default, one control-plane will be created.
 - Let the user define worker nodes using `-w|--workers` options. By default, two worker nodes will be created.
+- Let the user define the cluster name using `--name` option. By default, its name is `whaley`.
 
 ## From 1.0 to 1.2 - 2023/03
 
