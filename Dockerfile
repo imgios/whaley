@@ -7,6 +7,7 @@ RUN apk add --no-cache \
     git \
     jq \
     openssl \
+    sed \
     shadow \
     vim \
     wget
