@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - whaley workdir changed from `/root/` to `/.whaley/`
 
+### Removed
+
+- The cluster won't be deleted anymore when closing (`exit`) the bash on the jumphost.
+
 ## From 1.0 to 1.2 - 2023/03
 
 I'm sorry, I wasn't planning any release for the project, that's why I started writing down the following file only after those versions were created 😞.
