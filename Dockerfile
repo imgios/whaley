@@ -1,6 +1,7 @@
 FROM alpine:3.17 as whaley
 LABEL org.opencontainers.image.authors="@imgios"
 LABEL org.opencontainers.image.source="https://github.com/imgios/whaley"
+LABEL org.opencontainers.image.description="Kubernetes-in-Docker (kind) project to run a small local Kubernetes cluster using Docker container nodes."
 
 RUN apk add --no-cache \
     bash \
