@@ -1,4 +1,5 @@
 FROM alpine:3.17 as whaley
+LABEL org.opencontainers.image.authors="@imgios"
 
 RUN apk add --no-cache \
     bash \
