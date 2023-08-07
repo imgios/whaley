@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+MASTERS=1
 WORKERS=2
 
 # Parse options from the CLI
@@ -7,9 +8,16 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
     -w | --workers )
         shift; [[ "$1" =~ ^[0-9]$ ]] && WORKERS=$1 || WORKERS=2
         ;;
+    -m | --masters)
+        shift; [[ "$1" =~ ^[0-9]$ ]] && MASTERS=$1 || MASTERS=1
+        ;;
 esac; shift; done
 if [[ "$1" == '--' ]]; then shift; fi
 
+# Populate kind config file with both control-plane and workers nodes
+for (( i = 0 ; i < $MASTERS; i++)); do
+    echo "- role: control-plane" >> /root/kind.yml
+done
 for (( i = 0 ; i < $WORKERS; i++)); do
     echo "- role: worker" >> /root/kind.yml
 done
