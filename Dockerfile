@@ -7,6 +7,7 @@ RUN apk add --no-cache \
     git \
     jq \
     openssl \
+    sed \
     shadow \
     vim \
     wget
@@ -37,10 +38,10 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master
     chmod 700 get_helm.sh && \
     ./get_helm.sh
 
-ADD scripts /root/scripts
+ADD scripts /.whaley/scripts
 
-COPY kind.yml /root/
+COPY kind.yml /.whaley/
 
-ENV PATH="${PATH}:/root"
+ENV PATH="${PATH}:/.whaley"
 
-ENTRYPOINT ["/bin/bash", "/root/scripts/cluster-init.sh"]
+ENTRYPOINT ["/bin/bash", "/.whaley/scripts/cluster-init.sh"]

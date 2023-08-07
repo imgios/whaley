@@ -1,14 +1,41 @@
 #!/usr/bin/env bash
 
+MASTERS=1
+WORKERS=2
+NAME=whaley
+# Parse options from the CLI
+while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
+    -w | --workers )
+        shift; [[ "$1" =~ ^[0-9]$ ]] && WORKERS=$1 || WORKERS=2
+        ;;
+    -m | --masters)
+        shift; [[ "$1" =~ ^[0-9]$ ]] && MASTERS=$1 || MASTERS=1
+        ;;
+    --name)
+        if [[ -n "$2" && ! "$2" =~ ^- && ! "$1" == "--" ]]; then
+            shift; NAME=$1
+            sed -i "s/whaley/$NAME/g" /.whaley/kind.yml
+        fi
+esac; shift; done
+if [[ "$1" == '--' ]]; then shift; fi
+
+# Populate kind config file with both control-plane and workers nodes
+for (( i = 0 ; i < $MASTERS; i++)); do
+    echo "- role: control-plane" >> /.whaley/kind.yml
+done
+for (( i = 0 ; i < $WORKERS; i++)); do
+    echo "- role: worker" >> /.whaley/kind.yml
+done
+
 GREEN='\033[0;32m'
 NOCOLOR='\033[0m'
 # TO-DO: Should I replace whaley with the container name?
-export PS1="\[\e]0;\u@whaley: \w\a\]${debian_chroot:+($debian_chroot)}\u@whaley:\w\$ "
+export PS1="\[\e]0;\u@${NAME}: \w\a\]${debian_chroot:+($debian_chroot)}\u@${NAME}:\w\$ "
 
 echo -e ${GREEN}
 echo "> Building the cluster"
 echo -e ${NOCOLOR}
-bash -c '/usr/local/bin/kind create cluster --image kindest/node:v1.25.2 --config /root/kind.yml'
+bash -c '/usr/local/bin/kind create cluster --image kindest/node:v1.25.2 --config /.whaley/kind.yml' || exit 1
 
 # Retrieve docker container id
 # Docker >= 1.12 - $HOSTNAME seems to be the short container id
@@ -23,7 +50,7 @@ docker network connect kind $HOSTNAME
 echo -e ${GREEN}
 echo "> Modifying Kubernetes config to point to the master node"
 echo -e ${NOCOLOR}
-MASTER_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' whaley-control-plane)
+MASTER_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${NAME}-control-plane)
 sed -i "s/^    server:.*/    server: https:\/\/$MASTER_IP:6443/" $HOME/.kube/config
 cd
 
@@ -57,10 +84,7 @@ echo "You can access the dashboard from there: http://127.0.0.1:30303/api/v1/nam
 
 # Start up a bash shell to try out Kubernetes
 cd
+echo
+echo -e "\U2139 Execute the following command if you want to destroy the cluster:"
+echo "      kind delete cluster --name ${NAME}"
 /bin/bash
-
-# Delete the cluster at the end
-echo -e ${GREEN}
-echo "> Deleting the cluster"
-echo -e ${NOCOLOR}
-kind delete cluster --name whaley
