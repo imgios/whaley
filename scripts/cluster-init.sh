@@ -14,17 +14,17 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
     --name)
         if [[ -n "$2" && ! "$2" =~ ^- && ! "$1" == "--" ]]; then
             shift; NAME=$1
-            sed -i "s/whaley/$NAME/g" /root/kind.yml
+            sed -i "s/whaley/$NAME/g" /.whaley/kind.yml
         fi
 esac; shift; done
 if [[ "$1" == '--' ]]; then shift; fi
 
 # Populate kind config file with both control-plane and workers nodes
 for (( i = 0 ; i < $MASTERS; i++)); do
-    echo "- role: control-plane" >> /root/kind.yml
+    echo "- role: control-plane" >> /.whaley/kind.yml
 done
 for (( i = 0 ; i < $WORKERS; i++)); do
-    echo "- role: worker" >> /root/kind.yml
+    echo "- role: worker" >> /.whaley/kind.yml
 done
 
 GREEN='\033[0;32m'
@@ -35,7 +35,7 @@ export PS1="\[\e]0;\u@${NAME}: \w\a\]${debian_chroot:+($debian_chroot)}\u@${NAME
 echo -e ${GREEN}
 echo "> Building the cluster"
 echo -e ${NOCOLOR}
-bash -c '/usr/local/bin/kind create cluster --image kindest/node:v1.25.2 --config /root/kind.yml'
+bash -c '/usr/local/bin/kind create cluster --image kindest/node:v1.25.2 --config /.whaley/kind.yml'
 
 # Retrieve docker container id
 # Docker >= 1.12 - $HOSTNAME seems to be the short container id
