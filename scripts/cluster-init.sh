@@ -35,7 +35,7 @@ export PS1="\[\e]0;\u@${NAME}: \w\a\]${debian_chroot:+($debian_chroot)}\u@${NAME
 echo -e ${GREEN}
 echo "> Building the cluster"
 echo -e ${NOCOLOR}
-bash -c '/usr/local/bin/kind create cluster --image kindest/node:v1.25.2 --config /.whaley/kind.yml'
+bash -c '/usr/local/bin/kind create cluster --image kindest/node:v1.25.2 --config /.whaley/kind.yml' || exit 1
 
 # Retrieve docker container id
 # Docker >= 1.12 - $HOSTNAME seems to be the short container id
