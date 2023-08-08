@@ -10,27 +10,18 @@ Kubernetes-in-Docker ([`kind`](https://kind.sigs.k8s.io/)) project to run a smal
 
 Just [`🐳 docker`](https://www.docker.com/)
 
-(Optional) If you want to make some changes and/or build it manually:
+Run a docker container:
 ```shell
-docker build . -t <image-tag>
+docker run --rm -p 30303:8001 -v /var/run/docker.sock:/var/run/docker.sock -it ghcr.io/imgios/whaley:latest [OPTIONS]
 ```
 
-Run a docker container (replace the docker image name if you built it manually):
-```shell
-docker run --rm -p 30303:8001 -v /var/run/docker.sock:/var/run/docker.sock -it imgios/whaley:latest
-```
+| Option           | Default value | Description                                              |
+|:----------------:|:-------------:|----------------------------------------------------------|
+| `--name`         | `whaley`      | Define the `kind` cluster name, e.g. `--name imgios`     |
+| `-w, --workers`  | `2`           | Define the worker nodes count, e.g. `--workers 3`        |
+| `--masters`      | `1`           | Define the control-plane nodes count, e.g. `--masters 2` |
 
-This will boot up a Kubernetes cluster with a control-plane and two workers, and will also create to a jump-host server. If you want to update the node count, update [kind.yml](kind.yml):
-
-```yaml
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-name: whaley
-nodes:
-- role: control-plane
-- role: worker
-- role: worker
-```
+If you run it without options, it will boot up a Kubernetes cluster named `whaley` with a control-plane and two workers. If you want to update the node count or the cluster name, you can easily use the options described before.
 
 ## Built With
 
@@ -40,7 +31,7 @@ nodes:
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](#) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
