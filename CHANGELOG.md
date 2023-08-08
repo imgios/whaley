@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- OpenContainers labels about the author, the source code and the image description.
+
 ## [1.2.1] - 2023/08/07
 
 ### Added
