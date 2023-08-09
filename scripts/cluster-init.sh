@@ -38,10 +38,12 @@ export PS1="\[\e]0;\u@${NAME}: \w\a\]${debian_chroot:+($debian_chroot)}\u@${NAME
 if [[ -e "/.whaley/config/kind.yml" ]]; then
     _config=/.whaley/config/kind.yml
     echo "INFO :: User cluster config file detected! The following configuration will be used:"
+    echo
     cat $_config
 elif [[ -e "/.whaley/config/kind.yaml" ]]; then
     _config=/.whaley/config/kind.yaml
     echo "INFO :: User cluster config file detected! The following configuration will be used:"
+    echo
     cat $_config
 fi
     
