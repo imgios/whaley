@@ -34,9 +34,9 @@ NOCOLOR='\033[0m'
 # TO-DO: Should I replace whaley with the container name?
 export PS1="\[\e]0;\u@${NAME}: \w\a\]${debian_chroot:+($debian_chroot)}\u@${NAME}:\w\$ "
 
-# Check if kind.yml has been mounted in /.whaley/user-config
-if [[ -e "/.whaley/user-config/kind.yml "]]; then
-    _config=/.whaley/user-config/kind.yml
+# Check if kind.yml has been mounted in /.whaley/config/kind.yml
+if [[ -e "/.whaley/config/kind.yml "]]; then
+    _config=/.whaley/config/kind.yml
     echo "INFO :: User cluster config file detected! The following configuration will be used:"
     cat $_config
 fi
