@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Detect custom cluster configuration file (they must be named `kind.yaml` or `kind.yml`) in `/.whaley/config` to customize `kind` cluster creation using an already made configuration file:
+
+```shell
+whaley@docker:~$ docker run --name k8s-local-dev --rm \
+-p 30303:8001 \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v /home/imgios/kind.yml:/.whaley/config/kind.yml \
+-it whaley:dev
+```
+
 - OpenContainers labels about the author, the source code and the image description.
 
 ## [1.2.1] - 2023/08/07
