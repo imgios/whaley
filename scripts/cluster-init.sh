@@ -3,7 +3,7 @@
 MASTERS=1
 WORKERS=2
 NAME=whaley
-_config=/.whaley/kind.yaml
+_config=/.whaley/kind.yml
 
 # Parse options from the CLI
 while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
