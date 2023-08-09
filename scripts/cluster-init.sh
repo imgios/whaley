@@ -40,7 +40,7 @@ if [[ -e "/.whaley/config/kind.yml" ]]; then
     echo "INFO :: User cluster config file detected! The following configuration will be used:"
     cat $_config
 elif [[ -e "/.whaley/config/kind.yaml" ]]; then
-    _config=/.whaley/config/kind.yml
+    _config=/.whaley/config/kind.yaml
     echo "INFO :: User cluster config file detected! The following configuration will be used:"
     cat $_config
 fi
