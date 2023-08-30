@@ -19,4 +19,4 @@ jobs:
       - name: Build and push the Docker image
         run: |
              docker build .  --tag ghcr.io/imgios/whaley:${{  github.ref_name }} --tag ghcr.io/imgios/whaley:latest
-             docker push ghcr.io/imgios/whaley:latest --all-tags
+             docker push ghcr.io/imgios/whaley --all-tags
