@@ -3,6 +3,8 @@
 MASTERS=1
 WORKERS=2
 NAME=whaley
+_config=/.whaley/kind.yml
+
 # Parse options from the CLI
 while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
     -w | --workers )
@@ -14,17 +16,17 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
     --name)
         if [[ -n "$2" && ! "$2" =~ ^- && ! "$1" == "--" ]]; then
             shift; NAME=$1
-            sed -i "s/whaley/$NAME/g" /.whaley/kind.yml
+            sed -i "s/whaley/$NAME/g" $_config
         fi
 esac; shift; done
 if [[ "$1" == '--' ]]; then shift; fi
 
 # Populate kind config file with both control-plane and workers nodes
 for (( i = 0 ; i < $MASTERS; i++)); do
-    echo "- role: control-plane" >> /.whaley/kind.yml
+    echo "- role: control-plane" >> $_config
 done
 for (( i = 0 ; i < $WORKERS; i++)); do
-    echo "- role: worker" >> /.whaley/kind.yml
+    echo "- role: worker" >> $_config
 done
 
 GREEN='\033[0;32m'
@@ -32,10 +34,24 @@ NOCOLOR='\033[0m'
 # TO-DO: Should I replace whaley with the container name?
 export PS1="\[\e]0;\u@${NAME}: \w\a\]${debian_chroot:+($debian_chroot)}\u@${NAME}:\w\$ "
 
+# Check if kind.yml (or .yaml) has been mounted in /.whaley/config/kind.yml (or .yaml)
+if [[ -e "/.whaley/config/kind.yml" ]]; then
+    _config=/.whaley/config/kind.yml
+    echo "INFO :: User cluster config file detected! The following configuration will be used:"
+    echo
+    cat $_config
+elif [[ -e "/.whaley/config/kind.yaml" ]]; then
+    _config=/.whaley/config/kind.yaml
+    echo "INFO :: User cluster config file detected! The following configuration will be used:"
+    echo
+    cat $_config
+fi
+    
+
 echo -e ${GREEN}
 echo "> Building the cluster"
 echo -e ${NOCOLOR}
-bash -c '/usr/local/bin/kind create cluster --image kindest/node:v1.25.2 --config /.whaley/kind.yml' || exit 1
+/usr/local/bin/kind create cluster --image kindest/node:v1.25.2 --config ${_config} || exit 1
 
 # Retrieve docker container id
 # Docker >= 1.12 - $HOSTNAME seems to be the short container id
