@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] - 2024/03/26
+
+### Changed
+
+- Bump kind version to `0.22.0`
+- Bump kubectl version to `1.29.2`
+
 ## [1.2.2] - 2023/08/30
 
 ### Added
@@ -44,3 +51,4 @@ I'm sorry, I wasn't planning any release for the project, that's why I started w
 [unreleased]: https://github.com/imgios/whaley/compare/main...dev
 [1.2.1]: https://github.com/imgios/whaley/releases/tag/1.2.1
 [1.2.2]: https://github.com/imgios/whaley/releases/tag/1.2.2
+[1.2.3]: https://github.com/imgios/whaley/releases/tag/1.2.3
