@@ -32,7 +32,7 @@ RUN curl -LO https://dl.k8s.io/release/v1.25.2/bin/linux/amd64/kubectl && \
     mv ./kubectl /usr/local/bin/kubectl
 
 # Install Kubernetes in Docker (kind)
-RUN curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.17.0/kind-linux-amd64 && \
+RUN curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.22.0/kind-linux-amd64 && \
     chmod +x ./kind && \
     mv ./kind /usr/local/bin/kind
 
