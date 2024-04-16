@@ -26,6 +26,10 @@ RUN groupadd -r whaley \
             whaley && \
     usermod -aG docker whaley
 
+# Install yq
+RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && \
+    chmod +x /usr/bin/yq
+
 # Install kubectl
 RUN curl -LO https://dl.k8s.io/release/v1.29.2/bin/linux/amd64/kubectl && \
     chmod +x ./kubectl && \
