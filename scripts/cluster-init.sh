@@ -32,6 +32,14 @@ for (( i = 0 ; i < $WORKERS; i++)); do
     echo "- role: worker" >> $_config
 done
 
+# Enable port mapping on the first control-plane container
+if $EXTRA_PORT_MAPPING ; then
+yq '(.nodes[] | select(.role == "control-plane") | select(key < 1)).kubeadmConfigPatches = ["kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: \"ingress-ready=true\""] ' kind.yaml | sed "s/- |-/- |/"
+fi
+
 GREEN='\033[0;32m'
 NOCOLOR='\033[0m'
 # TO-DO: Should I replace whaley with the container name?
