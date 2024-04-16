@@ -4,6 +4,7 @@ MASTERS=1
 WORKERS=2
 NAME=whaley
 _config=/.whaley/kind.yml
+EXTRA_PORT_MAPPING=false
 
 # Parse options from the CLI
 while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
@@ -18,6 +19,8 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
             shift; NAME=$1
             sed -i "s/whaley/$NAME/g" $_config
         fi
+    --extra-port-mapping )
+        EXTRA_PORT_MAPPING=true
 esac; shift; done
 if [[ "$1" == '--' ]]; then shift; fi
 
