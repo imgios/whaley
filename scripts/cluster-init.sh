@@ -29,6 +29,7 @@ if [[ "$1" == '--' ]]; then shift; fi
 # Always add a control-plane node
 if $EXTRA_PORT_MAPPING ; then
     echo "- role: control-plane
+  kubeadmConfigPatches:
   - |
     kind: InitConfiguration
     nodeRegistration:
