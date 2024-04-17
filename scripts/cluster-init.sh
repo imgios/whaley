@@ -114,7 +114,7 @@ echo -e ${NOCOLOR}
 kubectl create serviceaccount k8s-dashboard-admin-sa
 kubectl create clusterrolebinding k8s-dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=default:k8s-dashboard-admin-sa
 
-if ! EXTRA_PORT_MAPPING ; then
+if ! $EXTRA_PORT_MAPPING ; then
     echo -e ${GREEN}
     echo "> Setting up the dashboard proxy"
     echo -e ${NOCOLOR}
