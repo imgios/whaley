@@ -4,7 +4,7 @@ MASTERS=1
 WORKERS=2
 NAME=whaley
 _config=/.whaley/kind.yml
-EXTRA_PORT_MAPPING=false
+INGRESS=false
 
 # Parse options from the CLI
 while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
@@ -21,13 +21,13 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
         fi
         ;;
     --ingress )
-        EXTRA_PORT_MAPPING=true
+        INGRESS=true
         ;;
 esac; shift; done
 if [[ "$1" == '--' ]]; then shift; fi
 
 # Always add a control-plane node
-if $EXTRA_PORT_MAPPING ; then
+if $INGRESS ; then
     echo "- role: control-plane
   kubeadmConfigPatches:
   - |
@@ -71,7 +71,6 @@ elif [[ -e "/.whaley/config/kind.yaml" ]]; then
     echo
     cat $_config
 fi
-    
 
 echo -e ${GREEN}
 echo "> Building the cluster"
@@ -114,7 +113,7 @@ echo -e ${NOCOLOR}
 kubectl create serviceaccount k8s-dashboard-admin-sa
 kubectl create clusterrolebinding k8s-dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=default:k8s-dashboard-admin-sa
 
-if ! $EXTRA_PORT_MAPPING ; then
+if ! $INGRESS ; then
     echo -e ${GREEN}
     echo "> Setting up the dashboard proxy"
     echo -e ${NOCOLOR}
