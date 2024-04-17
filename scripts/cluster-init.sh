@@ -113,14 +113,16 @@ echo -e ${NOCOLOR}
 kubectl create serviceaccount k8s-dashboard-admin-sa
 kubectl create clusterrolebinding k8s-dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=default:k8s-dashboard-admin-sa
 
-echo -e ${GREEN}
-echo "> Setting up the dashboard proxy"
-echo -e ${NOCOLOR}
-# 'whaley' in the next line is the main container name
-# TO-DO: Change whaley with the container name
-CLIENT_IP=$(docker inspect --format='{{.NetworkSettings.Networks.kind.IPAddress}}' $HOSTNAME)
-kubectl proxy --address=$CLIENT_IP --accept-hosts=^localhost$,^127\.0\.0\.1$,^\[::1\]$ &
-echo "You can access the dashboard from there: http://127.0.0.1:30303/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/"
+if ! EXTRA_PORT_MAPPING ; then
+    echo -e ${GREEN}
+    echo "> Setting up the dashboard proxy"
+    echo -e ${NOCOLOR}
+    # 'whaley' in the next line is the main container name
+    # TO-DO: Change whaley with the container name
+    CLIENT_IP=$(docker inspect --format='{{.NetworkSettings.Networks.kind.IPAddress}}' $HOSTNAME)
+    kubectl proxy --address=$CLIENT_IP --accept-hosts=^localhost$,^127\.0\.0\.1$,^\[::1\]$ &
+    echo "You can access the dashboard from there: http://127.0.0.1:30303/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/"
+fi
 
 # Start up a bash shell to try out Kubernetes
 cd
