@@ -20,7 +20,7 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
             sed -i "s/whaley/$NAME/g" $_config
         fi
         ;;
-    --extra-port-mapping )
+    --ingress )
         EXTRA_PORT_MAPPING=true
         ;;
 esac; shift; done
