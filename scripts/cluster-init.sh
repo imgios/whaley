@@ -12,7 +12,7 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
         shift; [[ "$1" =~ ^[0-9]$ ]] && WORKERS=$1 || WORKERS=2
         ;;
     -m | --masters)
-        shift; [[ "$1" =~ ^[0-9]$ ]] && MASTERS=$1 || MASTERS=1
+        shift; [[ "$1" =~ ^[1-9]$ ]] && MASTERS=$1 || MASTERS=1
         ;;
     --name)
         if [[ -n "$2" && ! "$2" =~ ^- && ! "$1" == "--" ]]; then
@@ -26,21 +26,32 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
 esac; shift; done
 if [[ "$1" == '--' ]]; then shift; fi
 
+# Always add a control-plane node
+if $EXTRA_PORT_MAPPING ; then
+    echo "- role: control-plane
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP"
+else
+    echo "- role: control-plane"
+fi
+
 # Populate kind config file with both control-plane and workers nodes
-for (( i = 0 ; i < $MASTERS; i++)); do
+for (( i = 1 ; i < $MASTERS; i++)); do
     echo "- role: control-plane" >> $_config
 done
 for (( i = 0 ; i < $WORKERS; i++)); do
     echo "- role: worker" >> $_config
 done
-
-# Enable port mapping on the first control-plane container
-if $EXTRA_PORT_MAPPING ; then
-yq '(.nodes[] | select(.role == "control-plane") | select(key < 1)).kubeadmConfigPatches = ["kind: InitConfiguration
-    nodeRegistration:
-      kubeletExtraArgs:
-        node-labels: \"ingress-ready=true\""] ' kind.yaml | sed "s/- |-/- |/"
-fi
 
 GREEN='\033[0;32m'
 NOCOLOR='\033[0m'
