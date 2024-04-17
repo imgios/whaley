@@ -40,9 +40,9 @@ if $EXTRA_PORT_MAPPING ; then
     protocol: TCP
   - containerPort: 443
     hostPort: 443
-    protocol: TCP" > $_config
+    protocol: TCP" >> $_config
 else
-    echo "- role: control-plane" > $_config
+    echo "- role: control-plane" >> $_config
 fi
 
 # Populate kind config file with both control-plane and workers nodes
