@@ -85,7 +85,7 @@ if ! docker ps | grep -q $HOSTNAME; then
     exit 1
 fi
 
-# Connect the  jump host node on the same net
+# Connect the jump host node on the same net
 docker network connect kind $HOSTNAME
 
 echo -e ${GREEN}
