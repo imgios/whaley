@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Nginx Ingress Controller and Extra Port Mapping has been added to support the ingress usage. It can be enabled using the `--enable-ingress` option.
 
+### Changed
+
+- A control-plane node is always getting created by default.
+
 ## [1.2.3] - 2024/03/26
 
 ### Changed
