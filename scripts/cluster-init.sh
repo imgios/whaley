@@ -20,7 +20,7 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
             sed -i "s/whaley/$NAME/g" $_config
         fi
         ;;
-    --ingress )
+    --enable-ingress )
         INGRESS=true
         ;;
 esac; shift; done
