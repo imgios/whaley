@@ -54,8 +54,6 @@ for (( i = 0 ; i < $WORKERS; i++)); do
     echo "- role: worker" >> $_config
 done
 
-GREEN='\033[0;32m'
-NOCOLOR='\033[0m'
 # TO-DO: Should I replace whaley with the container name?
 export PS1="\[\e]0;\u@${NAME}: \w\a\]${debian_chroot:+($debian_chroot)}\u@${NAME}:\w\$ "
 
@@ -72,9 +70,7 @@ elif [[ -e "/.whaley/config/kind.yaml" ]]; then
     cat $_config
 fi
 
-echo -e ${GREEN}
-echo "> Building the cluster"
-echo -e ${NOCOLOR}
+echo -e "\U0001F40B Building the cluster"
 /usr/local/bin/kind create cluster --image kindest/node:v1.29.2 --config ${_config} || exit 1
 
 # Retrieve docker container id
@@ -87,9 +83,8 @@ fi
 # Connect the jump host node on the same net
 docker network connect kind $HOSTNAME
 
-echo -e ${GREEN}
-echo "> Modifying Kubernetes config to point to the master node"
-echo -e ${NOCOLOR}
+echo
+echo -e "\U0001F4C4 Modifying Kubernetes config to point to the master node"
 MASTER_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${NAME}-control-plane)
 sed -i "s/^    server:.*/    server: https:\/\/$MASTER_IP:6443/" $HOME/.kube/config
 cd
@@ -103,9 +98,8 @@ for worker in ${WORKER_NODES}; do
 done
 
 if $INGRESS ; then
-    echo -e ${GREEN}
-    echo "> Deploying the NGINX Ingress Controller"
-    echo -e ${NOCOLOR}
+    echo
+    echo -e "\U0001F6AA Deploying the NGINX Ingress Controller"
     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
     nginx_deploy=$?
     sleep 30s
@@ -115,21 +109,18 @@ if $INGRESS ; then
     fi
 fi
 
-echo -e ${GREEN}
-echo "> Deploying the Kubernetes Dashboard"
-echo -e ${NOCOLOR}
+echo
+echo -e "\U0001F4CA Deploying the Kubernetes Dashboard"
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
 
-echo -e ${GREEN}
-echo "> Creating the RBAC to access the Dashboard"
-echo -e ${NOCOLOR}
+echo
+echo -e "\U0001F5DD  Creating the RBAC to access the Dashboard"
 kubectl create serviceaccount k8s-dashboard-admin-sa
 kubectl create clusterrolebinding k8s-dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=default:k8s-dashboard-admin-sa
 
 if ! $INGRESS ; then
-    echo -e ${GREEN}
-    echo "> Setting up the dashboard proxy"
-    echo -e ${NOCOLOR}
+    echo
+    echo -e "\U0001F310 Setting up the dashboard proxy"
     # 'whaley' in the next line is the main container name
     # TO-DO: Change whaley with the container name
     CLIENT_IP=$(docker inspect --format='{{.NetworkSettings.Networks.kind.IPAddress}}' $HOSTNAME)
@@ -140,6 +131,6 @@ fi
 # Start up a bash shell to try out Kubernetes
 cd
 echo
-echo -e "\U2139 Execute the following command if you want to destroy the cluster:"
+echo -e "\U00002139  Execute the following command if you want to destroy the cluster:"
 echo "      kind delete cluster --name ${NAME}"
 /bin/bash
