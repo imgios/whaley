@@ -62,3 +62,4 @@ I'm sorry, I wasn't planning any release for the project, that's why I started w
 [1.2.1]: https://github.com/imgios/whaley/releases/tag/1.2.1
 [1.2.2]: https://github.com/imgios/whaley/releases/tag/1.2.2
 [1.2.3]: https://github.com/imgios/whaley/releases/tag/1.2.3
+[1.3]: https://github.com/imgios/whaley/releases/tag/1.3
