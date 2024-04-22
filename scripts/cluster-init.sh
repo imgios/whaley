@@ -107,7 +107,7 @@ if $INGRESS ; then
     echo "> Deploying the NGINX Ingress Controller"
     echo -e ${NOCOLOR}
     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-    if [ $? -ne 0 ] || ! kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=90s ; then
+    if [ $? -ne 0 ] || ! kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=300s ; then
         echo "There was an error while deploying the NGINX Ingress Controller."
         # exit 1
     fi
