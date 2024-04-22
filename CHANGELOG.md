@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - A control-plane node is always getting created by default.
+- Now the script has fancy emojis when printing the step being executed ✨
 
 ## [1.2.3] - 2024/03/26
 
