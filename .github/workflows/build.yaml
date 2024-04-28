@@ -1,4 +1,4 @@
-name: Docker CI
+name: Shellcheck and Docker Build
 
 on:
   push:
@@ -11,12 +11,21 @@ on:
       - 'dev'
 
 jobs:
-  build:
+  shellcheck:
+    name: Check Bash Script
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check the bash script
+        run: shellcheck scripts/cluster-init.sh
+    
+  image-build:
     name: Build Docker image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2
