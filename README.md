@@ -12,7 +12,7 @@ Just [`🐳 docker`](https://www.docker.com/)
 
 Run a docker container:
 ```shell
-docker run --rm -p 30303:8001 -v /var/run/docker.sock:/var/run/docker.sock -it ghcr.io/imgios/whaley:latest [OPTIONS]
+docker run --rm [-p 30303:8001] -v /var/run/docker.sock:/var/run/docker.sock -it ghcr.io/imgios/whaley:latest [OPTIONS]
 ```
 
 | Option           | Default value | Description                                              |
