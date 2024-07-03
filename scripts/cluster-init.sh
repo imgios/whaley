@@ -6,6 +6,57 @@ NAME=whaley
 _config=/.whaley/kind.yml
 INGRESS=false
 
+error() {
+  # This function prints error messages
+  #
+  # $1 is the message to display
+
+  local message=''
+  if [[ -z $1 ]]; then
+    message="Something went wrong!"
+  else
+    message="$1"
+  fi
+  local timestamp=$(date +"%m-%d-%yT%T")
+  printf "[ %s ] - ERROR - %s\n" "$timestamp" "$message" >&2
+}
+
+info() {
+  # This function prints info messages
+  #
+  # $1 is the message to display
+
+  local message=''
+  if [[ -z $1 ]]; then
+    message="Hello! The author forgot to add the message 👀"
+  else
+    message="$1"
+  fi
+  local timestamp=$(date +"%m-%d-%yT%T")
+  printf "[ %s ] - INFO - %s\n" "$timestamp" "$message"
+}
+
+debug() {
+  # This function prints debug messages
+  # if verbosity has been set to true.
+  #
+  # $1 is the message to display
+
+  # Check if user enabled verbosity
+  if [ "$VERBOSE" = false ]; then
+    return 0 # do nothing
+  fi
+
+  local message=''
+  if [[ -z $1 ]]; then
+    message="Hello! The author forgot to add the message 👀"
+  else
+    message="$1"
+  fi
+  local timestamp=$(date +"%m-%d-%yT%T")
+  printf "[ %s ] - DEBUG - %s\n" "$timestamp" "$message"
+}
+
 # Parse options from the CLI
 while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
     -w | --workers )
@@ -60,12 +111,12 @@ export PS1="\[\e]0;\u@${NAME}: \w\a\]${debian_chroot:+($debian_chroot)}\u@${NAME
 # Check if kind.yml (or .yaml) has been mounted in /.whaley/config/kind.yml (or .yaml)
 if [[ -e "/.whaley/config/kind.yml" ]]; then
     _config=/.whaley/config/kind.yml
-    echo "INFO :: User cluster config file detected! The following configuration will be used:"
+    info "User cluster config file detected! The following configuration will be used:"
     echo
     cat $_config
 elif [[ -e "/.whaley/config/kind.yaml" ]]; then
     _config=/.whaley/config/kind.yaml
-    echo "INFO :: User cluster config file detected! The following configuration will be used:"
+    info "User cluster config file detected! The following configuration will be used:"
     echo
     cat $_config
 fi
@@ -76,7 +127,7 @@ echo -e "\U0001F40B Building the cluster"
 # Retrieve docker container id
 # Docker >= 1.12 - $HOSTNAME seems to be the short container id
 if ! docker ps | grep -q $HOSTNAME; then
-    echo "[ERROR] - Unable to retrieve the container id."
+    error "Unable to retrieve the container id."
     exit 1
 fi
 
@@ -104,7 +155,7 @@ if $INGRESS ; then
     nginx_deploy=$?
     sleep 30s
     if [ $nginx_deploy -ne 0 ] || ! kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=300s ; then
-        echo "There was an error while deploying the NGINX Ingress Controller."
+        error "There was an error while deploying the NGINX Ingress Controller. Skipping it."
         # exit 1
     fi
 fi
@@ -121,11 +172,9 @@ kubectl create clusterrolebinding k8s-dashboard-admin-sa --clusterrole=cluster-a
 if ! $INGRESS ; then
     echo
     echo -e "\U0001F310 Setting up the dashboard proxy"
-    # 'whaley' in the next line is the main container name
-    # TO-DO: Change whaley with the container name
     CLIENT_IP=$(docker inspect --format='{{.NetworkSettings.Networks.kind.IPAddress}}' $HOSTNAME)
     kubectl proxy --address=$CLIENT_IP --accept-hosts=^localhost$,^127\.0\.0\.1$,^\[::1\]$ &
-    echo "You can access the dashboard from there: http://127.0.0.1:30303/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/"
+    info "You can access the dashboard from there: http://127.0.0.1:30303/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/"
 fi
 
 # Start up a bash shell to try out Kubernetes
