@@ -28,7 +28,7 @@ info() {
 
   local message=''
   if [[ -z $1 ]]; then
-    message="Hello! The author forgot to add the message 👀"
+    message="Hello! The author forgot to add the message."
   else
     message="$1"
   fi
@@ -49,7 +49,7 @@ debug() {
 
   local message=''
   if [[ -z $1 ]]; then
-    message="Hello! The author forgot to add the message 👀"
+    message="Hello! The author forgot to add the message."
   else
     message="$1"
   fi
