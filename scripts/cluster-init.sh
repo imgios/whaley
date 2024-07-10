@@ -163,6 +163,31 @@ fi
 echo
 echo -e "\U0001F4CA Deploying the Kubernetes Dashboard"
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+# TO-DO: Create self-signed certificates for the dashboard
+[[ $INGRESS ]] && kubectl apply -f - <<EOF
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: kubernetes-dashboard
+  name: kubernetes-dashboard-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+spec:
+  tls:
+  - hosts:
+    - dashboard.kind.local
+    secretName: kubernetes-dashboard-cert
+  rules:
+  - host: dashboard.whaley.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kubernetes-dashboard
+          servicePort: 443
+EOF
 
 echo
 echo -e "\U0001F5DD  Creating the RBAC to access the Dashboard"
