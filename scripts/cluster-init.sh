@@ -177,7 +177,7 @@ metadata:
 spec:
   tls:
   - hosts:
-    - dashboard.kind.local
+    - dashboard.whaley.local
     secretName: kubernetes-dashboard-cert
   rules:
   - host: dashboard.whaley.local
